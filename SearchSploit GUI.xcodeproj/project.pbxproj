@@ -14,6 +14,7 @@
 		9F40F885205B609D0058F8A6 /* SearchSploit_GUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F40F884205B609D0058F8A6 /* SearchSploit_GUITests.swift */; };
 		9F40F890205B609D0058F8A6 /* SearchSploit_GUIUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F40F88F205B609D0058F8A6 /* SearchSploit_GUIUITests.swift */; };
 		9F40F8A0205B63240058F8A6 /* SearchSploit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F40F89F205B63240058F8A6 /* SearchSploit.swift */; };
+		9FB9CC41205CE4450059758F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FB9CC40205CE4450059758F /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		9F40F88F205B609D0058F8A6 /* SearchSploit_GUIUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSploit_GUIUITests.swift; sourceTree = "<group>"; };
 		9F40F891205B609D0058F8A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F40F89F205B63240058F8A6 /* SearchSploit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSploit.swift; sourceTree = "<group>"; };
+		9FB9CC40205CE4450059758F /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				9F40F871205B609C0058F8A6 /* AppDelegate.swift */,
 				9F40F873205B609C0058F8A6 /* ViewController.swift */,
 				9F40F89F205B63240058F8A6 /* SearchSploit.swift */,
+				9FB9CC40205CE4450059758F /* DetailViewController.swift */,
 				9F40F875205B609C0058F8A6 /* Assets.xcassets */,
 				9F40F877205B609C0058F8A6 /* Main.storyboard */,
 				9F40F87A205B609C0058F8A6 /* Info.plist */,
@@ -263,6 +266,7 @@
 				9F40F874205B609C0058F8A6 /* ViewController.swift in Sources */,
 				9F40F8A0205B63240058F8A6 /* SearchSploit.swift in Sources */,
 				9F40F872205B609C0058F8A6 /* AppDelegate.swift in Sources */,
+				9FB9CC41205CE4450059758F /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

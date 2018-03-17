@@ -16,24 +16,62 @@ class ViewController: NSViewController {
     @IBOutlet weak var excludeField: NSTokenField!
     @IBOutlet weak var caseBox: NSButton!
     @IBOutlet weak var exactBox: NSButton!
-    @IBOutlet weak var titlesBox: NSButton!
     @IBOutlet weak var urlBox: NSButton!
     @IBOutlet weak var resultsTableView: NSTableView!
-    
+    @IBOutlet weak var browserButton: NSButton!
+    @IBOutlet weak var openButton: NSButton!
+    @IBOutlet weak var exploitNameTBLabel: NSTextField!
     //MARK: Properties
     var exploitsFound: Array<SearchSploit.Exploit>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         excludeField.tokenizingCharacterSet.update(with: " ")
+        
         resultsTableView.dataSource = self
         resultsTableView.delegate   = self
+        resultsTableView.target     = self
+        resultsTableView.doubleAction = #selector(tableViewDoubleClick(_:))
+        
+        exploitNameTBLabel.allowsDefaultTighteningForTruncation = true
+        
+        searchField.delegate = self
     }
 
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
+            if let representedObject = representedObject as? SearchSploit.Exploit {
+                openButton.isEnabled = true
+                browserButton.isEnabled = true
+                exploitNameTBLabel.stringValue = representedObject.title
+            }
+            else {
+                openButton.isEnabled = false
+                browserButton.isEnabled = false
+            }
         }
+    }
+    
+    lazy var detailViewController: DetailViewController = {
+        return self.storyboard!.instantiateController(withIdentifier: NSStoryboard.SceneIdentifier(rawValue: "DetailViewController"))
+            as! DetailViewController
+    }()
+    
+    override func rightMouseDown(with event: NSEvent) {
+        guard representedObject != nil else {
+            return
+        }
+        
+        let detailsMenu = NSMenuItem(title: "Show details", action: #selector(showDetails), keyEquivalent: "D")
+        let openMenu    = NSMenuItem(title: "Open locally", action: #selector(openFileTB(_:)), keyEquivalent: "O")
+        let browseMenu  = NSMenuItem(title: "Browse on exploit-db", action: #selector(showBrowserTB(_:)), keyEquivalent: "B")
+        
+        let menu = NSMenu(title: "Exploit Details")
+        menu.insertItem(detailsMenu, at: 0)
+        menu.insertItem(openMenu, at: 1)
+        menu.insertItem(browseMenu, at: 2)
+        NSMenu.popUpContextMenu(menu, with: event, for: self.view)
     }
     
     func getOptions() -> SearchSploit.Options {
@@ -46,12 +84,6 @@ class ViewController: NSViewController {
         if exactBox.state  == .on {
             options.exactMatch = true
         }
-        if titlesBox.state == .on {
-            options.onlyTitle = true
-        }
-        if urlBox.state    == .on {
-            options.showURL = true
-        }
         
         // Token field
         if let tokens = excludeField.objectValue as? Array<String> {
@@ -61,20 +93,68 @@ class ViewController: NSViewController {
         return options
     }
     
+    @objc func tableViewDoubleClick(_ sender: Any) {
+        
+        showDetails()
+        
+        /*
+        if urlBox.state == .on {
+            NSWorkspace().open(URL(string: exploit.url)!)
+        }
+        else {
+            NSWorkspace().openFile(exploit.path)
+        }
+        */
+    }
+    
+    
+    @objc func showDetails() {
+        guard resultsTableView.selectedRow >= 0,
+            let exploit = exploitsFound?[resultsTableView.selectedRow]
+            else {
+                return
+        }
+        detailViewController.exploit = exploit
+        self.presentViewControllerAsSheet(detailViewController)
+    }
+    
+    @IBAction func openFileTB(_ sender: Any) {
+        NSWorkspace().openFile(exploitsFound![resultsTableView.selectedRow].path)
+    }
+    
+    @IBAction func showBrowserTB(_ sender: Any) {
+        NSWorkspace().open(URL(string: exploitsFound![resultsTableView.selectedRow].url)!)
+    }
+    
     @IBAction func search(_ sender: Any) {
-        let searchTerms = searchField.stringValue.components(separatedBy: " ")
-        let options = getOptions()
-        if let result = SearchSploit().search(searchTerms, options: options) {
-            print("Search terms  : \(result.query)")
-            print("DB Path       : \(result.db_path)")
-            if let exploits = result.exploits {
-                exploitsFound = exploits
+        
+        if searchField.stringValue != "" {
+            let searchTerms = searchField.stringValue.components(separatedBy: " ")
+            let options = getOptions()
+            if let result = SearchSploit().search(searchTerms, options: options) {
+                if let exploits = result.exploits {
+                    exploitsFound = exploits
+                }
             }
+        }
+        else {
+            exploitsFound = nil
         }
         resultsTableView.reloadData()
     }
 }
 
+//MARK: - SearchField Delegate
+extension ViewController : NSSearchFieldDelegate {
+    func searchFieldDidEndSearching(_ sender: NSSearchField) {
+        exploitsFound = nil
+        resultsTableView.reloadData()
+    }
+    
+    func searchFieldDidStartSearching(_ sender: NSSearchField) {
+        search(sender)
+    }
+}
 
 //MARK: - Table View Data Source
 extension ViewController : NSTableViewDataSource {
@@ -116,7 +196,7 @@ extension ViewController : NSTableViewDelegate {
             cellIdentifier = CellIdentifiers.TypeCell
         }
         else if tableColumn == tableView.tableColumns[3] {  // Title column
-            text = exploit.title ?? ""
+            text = exploit.title
             cellIdentifier = CellIdentifiers.TitleCell
         }
         
@@ -125,5 +205,15 @@ extension ViewController : NSTableViewDelegate {
             return cell
         }
         return nil
+    }
+    
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        if resultsTableView.selectedRow >= 0 && resultsTableView.selectedRow < (exploitsFound?.count)! {
+            guard let exploit = exploitsFound?[resultsTableView.selectedRow] else {
+                return
+            }
+            representedObject = exploit
+        }
+        
     }
 }

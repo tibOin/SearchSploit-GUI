@@ -14,8 +14,6 @@ class SearchSploit: NSObject {
     public struct Options {
         var caseSensitive: Bool?
         var exactMatch: Bool?
-        var onlyTitle: Bool?
-        var showURL: Bool?
         var exclude: Array<String>? {
             get {
                 return self._exStore
@@ -30,9 +28,9 @@ class SearchSploit: NSObject {
     }
     
     struct Exploit {
-        let title    : String!
-        let path     : String!
-        let url      : String!
+        let title    : String
+        let path     : String
+        let url      : String
         var author   : String?
         var id       : String?
         var type     : String?
@@ -87,6 +85,8 @@ class SearchSploit: NSObject {
         
         args.append(contentsOf: terms)
         
+        print(args.joined(separator: " "))
+        
         if let out = cmdline(args) {
             do {
                 let json = try JSONSerialization.jsonObject(with: out.data(using: .utf8)!) as? Dictionary<String, Any>
@@ -139,14 +139,6 @@ class SearchSploit: NSObject {
         
         if let _ = options.exactMatch {
             args.append("-e")
-        }
-        
-        if let _ = options.onlyTitle {
-            args.append("-t")
-        }
-        
-        if let _ = options.showURL {
-            args.append("-w")
         }
         
         if let terms = options.exclude {
