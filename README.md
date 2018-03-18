@@ -22,7 +22,9 @@ It will feel more natural to search the exploit-database.
 + 128Mb RAM min. :smirk:
 
 ## Installation
-You can get the latest builds images (.dmg) in the [Builds](SearchSploit%20GUI/Builds/) folder.
+Visit the [Release](https://github.com/tibOin/SearchSploit-GUI/releases) section to get the latest version.
+
+Otherwise you can get the all images (.dmg) in the [Builds](SearchSploit%20GUI/Builds/) folder.
 
 
 
