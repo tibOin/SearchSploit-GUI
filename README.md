@@ -1,7 +1,8 @@
 # Exploit-Database Searchsploit – GUI (macOS Native)
+![Search View](SearchSploit%20GUI/Media/Screenshots/menu.png)
 + You're a hacker, a developer, an IT enthusiast or anyone who use the popular exploit database.
 + You work on Mac.
-+ You like old school interfaces but think GUIs are cool.
++ You like old school CLI interfaces but think GUIs are cool.
 
 You came to the right place!
 
@@ -26,7 +27,18 @@ Visit the [Release](https://github.com/tibOin/SearchSploit-GUI/releases) section
 
 Otherwise you can get the all images (.dmg) in the [Builds](SearchSploit%20GUI/Builds/) folder.
 
-
+## Known issues
+The options seems messy. They don't work as expected but are not totally broken.
 
 ## Contribution
-Contribution is welcome but I won't guarantee any reactivity in response as developping is not my job.
+Contribution is welcome but I won't guarantee any reactivity in response as developing is not my job.
+
+## Screenshots
+###### Search View : the main view
+![Search View](SearchSploit%20GUI/Media/Screenshots/mainview.png)
+
+###### Details View
+![Search View](SearchSploit%20GUI/Media/Screenshots/detailview.png)
+
+###### Touch Bar support
+![Search View](SearchSploit%20GUI/Media/Screenshots/touchbar.png)
